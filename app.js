@@ -10,7 +10,7 @@ const flipContainer = document.querySelector(".flip-container");
 const flipper = document.querySelector(".flipper");
 
 let score = 0;
-let start = false;
+let inProgress = false;
 let cardsSelected = 0;
 let lowScore = 0;
 let matchesMade = 0;
@@ -63,11 +63,10 @@ const gifObj = {
 
 
 
-// Reset buttn taken from https://stackoverflow.com/questions/5611119/how-to-make-a-refresh-button-using-javascript
 resetButton.addEventListener("click", function () {
   score = 0;
   scoreCard.innerText = (`Score: ${score}`);
-  start = false;
+  inProgress = false;
   let divs = document.querySelectorAll(".flip-container");
   for (let div of divs) {
     div.remove();
@@ -78,8 +77,9 @@ resetButton.addEventListener("click", function () {
 // shuffle cards and create divs based on radio button input
 startButton.addEventListener("click", function () {
   let gameMode = getGameMode();
-  if (start === false) {
-    start = true;
+  console.log(inProgress);
+  if (!inProgress) {
+    inProgress = true;
     switch (gameMode) {
       case "basic":
         let shuffledColors = shuffle(COLORS);
@@ -99,6 +99,7 @@ startButton.addEventListener("click", function () {
         createDivsForGifs(shuffledGifs);
         break;
       default:
+        inProgress = false;
         alert("ATTENTION USER:\nPlease select a game mode, then click start.");
     }
   } else {
@@ -266,7 +267,7 @@ function createDivsForGifs(gifArray) {
 
 
 function handleCardClick(event) {
-  if (start) {
+  if (inProgress) {
     numSelected++;
     if (numSelected <= 2) {
       previousCard = currentCard;
