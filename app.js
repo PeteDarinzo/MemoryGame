@@ -87,6 +87,7 @@ startButton.addEventListener("click", function () {
         break;
       case "random":
         if (!pairsInput.value) {
+          inProgress = false;
           alert("Please specify the number of pairs for the game, then click start.");
         }
         randColors = generateRandomColors(pairsInput.value, randColors);
