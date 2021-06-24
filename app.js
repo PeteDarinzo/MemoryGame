@@ -267,6 +267,7 @@ function createDivsForGifs(gifArray) {
 
 
 function handleCardClick(event) {
+  // check if game is in progress, and make sure the selected card isn't already matched
   if (inProgress && !(event.target.parentElement.classList.contains("matched"))) {
     numSelected++;
     if (numSelected <= 2) {
