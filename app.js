@@ -71,13 +71,12 @@ resetButton.addEventListener("click", function () {
   for (let div of divs) {
     div.remove();
   }
-})
+});
 
 
 // shuffle cards and create divs based on radio button input
 startButton.addEventListener("click", function () {
   let gameMode = getGameMode();
-  console.log(inProgress);
   if (!inProgress) {
     inProgress = true;
     switch (gameMode) {
@@ -268,31 +267,37 @@ function createDivsForGifs(gifArray) {
 
 
 function handleCardClick(event) {
-  if (inProgress) {
+  if (inProgress && !(event.target.parentElement.classList.contains("matched"))) {
     numSelected++;
     if (numSelected <= 2) {
+      if (event.target.classList.contains("matched")) {
+        console.log()
+      }
       previousCard = currentCard;
       previousColor = previousCard.classList;
       currentCard = event.target;
       currentColor = currentCard.classList;
       currentCard.parentElement.style.transform = "rotateY(180deg)";
-      if (numSelected === 2 && currentCard != previousCard) {
-        score++;
-        scoreCard.innerText = (`Score: ${score}`);
-        if (currentColor.value === previousColor.value) {
-          matchesMade++;
-          if (matchesMade === 5) {
-            updateLowScore();
-          }
-          numSelected = 0;
-        } else {
-          resetCards(currentCard, previousCard);
+    }
+
+    if (numSelected === 2 && currentCard != previousCard) {
+      score++;
+      scoreCard.innerText = (`Score: ${score}`);
+      if (currentColor.value === previousColor.value) {
+        matchesMade++;
+        currentCard.parentElement.classList.add("matched");
+        previousCard.parentElement.classList.add("matched");
+        if (matchesMade === 5) {
+          updateLowScore();
         }
-        // ELSE CASE prevents user from modifying the score by clicking the same card twice 
+        numSelected = 0;
       } else {
-        previousCard = "";
-        numSelected = 1;
+        resetCards(currentCard, previousCard);
       }
+      // ELSE CASE prevents user from modifying the score by clicking the same card twice 
+    } else {
+      previousCard = "";
+      numSelected = 1;
     }
   }
 }
