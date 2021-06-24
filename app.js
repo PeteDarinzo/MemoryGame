@@ -268,12 +268,13 @@ function createDivsForGifs(gifArray) {
 
 function handleCardClick(event) {
   // check if game is in progress, and make sure the selected card isn't already matched
-  if (inProgress && !(event.target.parentElement.classList.contains("matched"))) {
+  console.log(event.target.classList);
+
+  if (inProgress && event.target.classList.contains("front")) {
+
     numSelected++;
+
     if (numSelected <= 2) {
-      if (event.target.classList.contains("matched")) {
-        console.log()
-      }
       previousCard = currentCard;
       previousColor = previousCard.classList;
       currentCard = event.target;
@@ -284,13 +285,14 @@ function handleCardClick(event) {
     if (numSelected === 2 && currentCard != previousCard) {
       score++;
       scoreCard.innerText = (`Score: ${score}`);
+
       if (currentColor.value === previousColor.value) {
         matchesMade++;
-        currentCard.parentElement.classList.add("matched");
-        previousCard.parentElement.classList.add("matched");
+
         if (matchesMade === 5) {
           updateLowScore();
         }
+
         numSelected = 0;
       } else {
         resetCards(currentCard, previousCard);
@@ -302,6 +304,7 @@ function handleCardClick(event) {
     }
   }
 }
+
 
 // when the DOM loads
 restoreLowScore();
